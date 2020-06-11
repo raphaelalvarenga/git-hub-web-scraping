@@ -1,4 +1,5 @@
-import express, { Application, Request, Response } from "express";
+import express, { Application } from "express";
+import IndexRoutes from "../routes/index-routes";
 
 export default class App {
     private server: Application;
@@ -16,10 +17,7 @@ export default class App {
     }
 
     public routes() {
-        this.server.get("/", (req: Request, res: Response) => {
-            console.log("ok");
-            res.send({ok: "true"});
-        })
+        this.server.use(IndexRoutes);
     }
 
     public listen() {
