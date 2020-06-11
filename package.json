@@ -1,0 +1,29 @@
+{
+  "name": "git-hub-web-scraping",
+  "version": "1.0.0",
+  "description": "An API Web Scraping that searches awesome data from GitHub's repos.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raphaelalvarenga/git-hub-web-scraping.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/raphaelalvarenga/git-hub-web-scraping/issues"
+  },
+  "homepage": "https://github.com/raphaelalvarenga/git-hub-web-scraping#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cheerio": "^1.0.0-rc.3",
+    "express": "^4.17.1",
+    "request-promise": "^4.2.5"
+  },
+  "devDependencies": {
+    "typescript": "^3.9.5"
+  }
+}
