@@ -4,6 +4,6 @@ const router = Router();
 import indexController from "../controllers/index-controller";
 
 router.route("/")
-    .get(indexController);
+    .post(indexController);
 
 export default router;
