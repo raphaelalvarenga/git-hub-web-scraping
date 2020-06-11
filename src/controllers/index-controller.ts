@@ -9,22 +9,18 @@ const indexController = async (req: Request, res: Response): Promise<Response> =
     const $ = cheerio.load(response);
     
     // This is the HTML of the block of files/folders
-    let html: any = $("table.files tbody").html();
+    $("tr.js-navigation-item").map((i, elem) => {
+        // if (i === 0) {
 
-    // Turning the string into an array using as delimiter the <tr> tag
-    const trs: string[] = html.replace(/<\/tr>/g, "<\/tr>|").split("|");
+            // It's possible to find out whether the actual cycle in the loop is a folder or not through the icon
+            const svgClasses = $("tr.js-navigation-item").eq(i).find("svg").attr("class");
 
-    // A remaning index keeps empty in the last position of the array. It needs to be eliminated
-    trs.pop();
-
-    // Loop through <tr> tags
-    trs.map((tr: string, index: number) => {
-        console.log(index);
-        // The first <tr> tag is never important. Therefore, the loop needs to be considered from the second tag on
-        if (index > 0) {
-            // The code keeps here
-        }
-    })
+            // If the second class is "octicon-file", then it is a file. Otherwise it is a folder
+            const isFile = svgClasses?.split(" ")[1] === "octicon-file";
+            
+            isFile ? console.log("Yes, it is a file") : console.log("No, it is not a file");
+        // }
+    });
     
     return res.json(req.body);
 }
