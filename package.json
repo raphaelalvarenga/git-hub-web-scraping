@@ -4,7 +4,7 @@
   "description": "An API Web Scraping that searches awesome data from GitHub's repos.",
   "main": "index.js",
   "scripts": {
-    "dev": "tsc",
+    "dev": "nodemon src/index.ts",
     "build": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
