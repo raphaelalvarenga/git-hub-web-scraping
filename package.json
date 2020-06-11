@@ -4,6 +4,7 @@
   "description": "An API Web Scraping that searches awesome data from GitHub's repos.",
   "main": "index.js",
   "scripts": {
+    "build": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,6 +25,7 @@
     "request-promise": "^4.2.5"
   },
   "devDependencies": {
+    "@types/express": "^4.17.6",
     "typescript": "^3.9.5"
   }
 }
