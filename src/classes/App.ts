@@ -2,13 +2,17 @@ import express, { Application, Request, Response } from "express";
 
 export default class App {
     private server: Application;
-    private port: number | string;
 
-    constructor(port?: number | string) {
+    constructor(private port?: number | string) {
         this.server = express();
+        this.settings();
         this.routes();
         
         this.port = port || 3000;
+    }
+
+    public settings() {
+        this.server.set("port", this.port || process.env.PORT || 3000);
     }
 
     public routes() {
@@ -19,6 +23,6 @@ export default class App {
     }
 
     public listen() {
-        this.server.listen(this.port, () => console.log(`Port ${this.port} running...`));
+        this.server.listen(this.server.get("port"), () => console.log(`Port ${this.server.get("port")} running...`));
     }
 }
