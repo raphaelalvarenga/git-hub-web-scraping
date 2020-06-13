@@ -1,3 +1,4 @@
+import request from "request-promise";
 import cheerio from "cheerio";
 import FileInterface from "../interfaces/file-interface";
 import getFileRemainingData from "../routines/getFileRemaningData";
@@ -10,10 +11,12 @@ const getRowData = async (html: string): Promise<FileInterface[]> => {
         const tempFile: FileInterface = {name: "", extension: "", size: "", totalLines: ""};
         const svgClasses = $(item).find(".icon > svg").attr("class");
         const isFile = svgClasses?.split(" ")[1] === "octicon-file";
+        const content: Cheerio = $(item).find("td.content a");
+        const relativeLink = content.attr("href")
 
+        // If it is a file...
         if (isFile) {
             // Get the file name
-            const content: Cheerio = $(item).find("td.content a");
             tempFile.name = content.text();
 
             // Get the extension. In case the name is such as ".gitignore", the whole name will be considered
@@ -21,7 +24,6 @@ const getRowData = async (html: string): Promise<FileInterface[]> => {
             tempFile.extension = filename === "" ? tempFile.name : extension;
 
             // Get the total lines and the size. A new request to the file screen will be needed
-            const relativeLink = content.attr("href")
             const FILEURL = `https://github.com${relativeLink}`;
 
             const fileRemainingData: {totalLines: string, size: string} = await getFileRemainingData(FILEURL);
@@ -29,7 +31,11 @@ const getRowData = async (html: string): Promise<FileInterface[]> => {
             tempFile.totalLines = fileRemainingData.totalLines;
             tempFile.size = fileRemainingData.size;
         } else {
-            // is not file
+            // Then it is a folder
+
+            // Got stuck here!
+            const folderResponse: string = await request(`https://github.com${relativeLink}`);
+            const subFiles: FileInterface[] = await getRowData(folderResponse);
         }
 
         return tempFile;
