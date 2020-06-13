@@ -2,7 +2,7 @@ import request from "request-promise";
 import cheerio from "cheerio";
 import FileInterface from "../interfaces/file-interface";
 
-const getFileRemainingData = async (url: string, file: FileInterface): Promise<{totalLines: string, size: string}> => {
+const getFileRemainingData = async (url: string): Promise<{totalLines: string, size: string}> => {
     const fileRemainingData: string = await request(url);
     const $ = cheerio.load(fileRemainingData);
 
