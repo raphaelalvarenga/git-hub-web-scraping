@@ -1,28 +1,23 @@
 import { Request, Response } from "express";
 import request from "request-promise";
-import cheerio from "cheerio";
+import FileInterface from "../interfaces/file-interface";
+import getRowData from "../routines/getRowData";
 
 const indexController = async (req: Request, res: Response): Promise<Response> => {
-    const URL: string = req.body.url;
 
-    const response = await request(URL);
-    const $ = cheerio.load(response);
+    // This variable will be populated with all files in the project
+    const files: FileInterface[] = [];
+
+    const REPOURL: string = req.body.url;
+
+    const repoResponse: string = await request(REPOURL);
+
+    // First thing is create an array of <tr> tag that represents the file/folders the repo delivers when the page starts
+    const rowData: FileInterface[] = await getRowData(repoResponse);
+    console.log("This is the files data:");
+    console.log(rowData);
     
-    // This is the HTML of the block of files/folders
-    $("tr.js-navigation-item").map((i, elem) => {
-        // if (i === 0) {
-
-            // It's possible to find out whether the actual cycle in the loop is a folder or not through the icon
-            const svgClasses = $("tr.js-navigation-item").eq(i).find("svg").attr("class");
-
-            // If the second class is "octicon-file", then it is a file. Otherwise it is a folder
-            const isFile = svgClasses?.split(" ")[1] === "octicon-file";
-            
-            isFile ? console.log("Yes, it is a file") : console.log("No, it is not a file");
-        // }
-    });
-    
-    return res.json(req.body);
+    return res.json(rowData);
 }
 
 export default indexController;
