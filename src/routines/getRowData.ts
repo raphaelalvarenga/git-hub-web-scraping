@@ -23,7 +23,7 @@ const getRowData = async (html: string): Promise<any[]> => {
 
             // Get the extension. In case the name is such as ".gitignore", the whole name will be considered
             const [filename, extension] = tempFile.name.split(".");
-            tempFile.extension = filename === "" ? tempFile.name : extension;
+            tempFile.extension = extension ? extension : tempFile.name;
 
             // Get the total lines and the size. A new request to the file screen will be needed
             const FILEURL = `https://github.com${relativeLink}`;

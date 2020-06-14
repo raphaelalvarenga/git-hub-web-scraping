@@ -29,7 +29,7 @@ const getRowData = (html) => __awaiter(void 0, void 0, void 0, function* () {
             tempFile.name = content.text();
             // Get the extension. In case the name is such as ".gitignore", the whole name will be considered
             const [filename, extension] = tempFile.name.split(".");
-            tempFile.extension = filename === "" ? tempFile.name : extension;
+            tempFile.extension = extension ? extension : tempFile.name;
             // Get the total lines and the size. A new request to the file screen will be needed
             const FILEURL = `https://github.com${relativeLink}`;
             const fileRemainingData = yield getFileRemaningData_1.default(FILEURL);

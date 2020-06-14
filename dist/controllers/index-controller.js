@@ -28,7 +28,7 @@ const indexController = (req, res) => __awaiter(void 0, void 0, void 0, function
         response = Object.assign(Object.assign({}, response), { success: true });
         // Building folders and files parameters in the response
         rowData.map(data => {
-            var _a, _b;
+            var _a;
             // Does the data have URL?
             if (data.url) {
                 // Then, it's a folder! But unfortunately, git creates some hidden and nameless folders. So...
@@ -39,7 +39,18 @@ const indexController = (req, res) => __awaiter(void 0, void 0, void 0, function
             }
             else {
                 // Otherwise, it's a file!
-                (_b = response.files) === null || _b === void 0 ? void 0 : _b.push(data);
+                // It's necessary to check if response object already has that extension set and get its index
+                const extensionIndex = response.files.findIndex(file => file.extension === data.extension);
+                // If the extension is already set in response object...
+                if (extensionIndex > -1) {
+                    // Then just add the file
+                    response.files[extensionIndex].files.push(data);
+                }
+                else {
+                    // Otherwise, it needs to be created in the response object and add the file
+                    const newExtension = { extension: data.extension, files: [data] };
+                    response.files.push(newExtension);
+                }
             }
         });
     }

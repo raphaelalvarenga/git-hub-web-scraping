@@ -3,7 +3,7 @@ import request from "request-promise";
 import FileInterface from "../interfaces/file-interface";
 import getRowData from "../routines/getRowData";
 import ResponseInterface from "../interfaces/response-interface";
-import FolderInterface from "../interfaces/folder-interface";
+import FileExtensionInterface from "../interfaces/file-extension-interface";
 
 const indexController = async (req: Request, res: Response): Promise<Response> => {
 
@@ -39,7 +39,21 @@ const indexController = async (req: Request, res: Response): Promise<Response> =
             } else {
 
                 // Otherwise, it's a file!
-                response.files?.push(data)
+
+                // It's necessary to check if response object already has that extension set and get its index
+                const extensionIndex = response.files.findIndex(file => file.extension === data.extension);
+
+                // If the extension is already set in response object...
+                if (extensionIndex > -1) {
+
+                    // Then just add the file
+                    response.files[extensionIndex].files.push(data);
+                } else {
+
+                    // Otherwise, it needs to be created in the response object and add the file
+                    const newExtension: FileExtensionInterface = {extension: data.extension, files: [data]}
+                    response.files.push(newExtension);
+                }
             }
         })
     }
