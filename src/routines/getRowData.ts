@@ -4,7 +4,7 @@ import FileInterface from "../interfaces/file-interface";
 import getFileRemainingData from "../routines/getFileRemaningData";
 import FolderInterface from "../interfaces/folder-interface";
 
-const getRowData = async (html: string): Promise<FileInterface[]> => {
+const getRowData = async (html: string): Promise<any[]> => {
 
     const $ = cheerio.load(html);    
 
@@ -45,7 +45,7 @@ const getRowData = async (html: string): Promise<FileInterface[]> => {
         return tempItem;
     }).get();
 
-    const files: FileInterface[] = await Promise.all(promises);
+    const files: any[] = await Promise.all(promises);
 
     return files;
 }

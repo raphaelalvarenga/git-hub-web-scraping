@@ -23,7 +23,8 @@ const indexController = (req, res) => __awaiter(void 0, void 0, void 0, function
     try {
         // First thing is create an array of <tr> tag that represents the file/folders the repo delivers when the page starts
         const rowData = yield getRowData_1.default(repoResponse);
-        response = Object.assign(Object.assign({}, response), { success: true, files: rowData });
+        response = Object.assign(Object.assign({}, response), { success: true });
+        rowData.map(data => { var _a, _b; return data.url ? (_a = response.folders) === null || _a === void 0 ? void 0 : _a.push(data) : (_b = response.files) === null || _b === void 0 ? void 0 : _b.push(data); });
     }
     catch (erro) {
         response = Object.assign(Object.assign({}, response), { message: erro });

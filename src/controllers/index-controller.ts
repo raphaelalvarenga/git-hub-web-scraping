@@ -18,9 +18,11 @@ const indexController = async (req: Request, res: Response): Promise<Response> =
 
     try {
         // First thing is create an array of <tr> tag that represents the file/folders the repo delivers when the page starts
-        const rowData: FileInterface[] | FolderInterface[] = await getRowData(repoResponse);
+        const rowData: any[] = await getRowData(repoResponse);
         
-        response = {...response, success: true, files: rowData}
+        response = {...response, success: true}
+
+        rowData.map(data => data.url ? response.folders?.push(data) : response.files?.push(data))
     }
 
     catch (erro) {
