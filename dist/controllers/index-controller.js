@@ -22,11 +22,6 @@ const indexController = (req, res) => __awaiter(void 0, void 0, void 0, function
     let response = { success: false, message: "", files: [], folders: [] };
     try {
         repoResponse = yield request_promise_1.default(REPOURL);
-    }
-    catch (error) {
-        response = Object.assign(Object.assign({}, response), { message: "Please, check the link you're searching..." });
-    }
-    try {
         // First thing is create an array of <tr> tag that represents the file/folders the repo delivers when the page starts
         const rowData = yield getRowData_1.default(repoResponse);
         // Setting success in the request
@@ -49,7 +44,7 @@ const indexController = (req, res) => __awaiter(void 0, void 0, void 0, function
         });
     }
     catch (error) {
-        response = Object.assign(Object.assign({}, response), { message: "Something went wrong. Please, contact the IT team." });
+        response = Object.assign(Object.assign({}, response), { message: "Something went wrong. Please, check the link you're searching or contact the IT team..." });
     }
     return res.json(response);
 });

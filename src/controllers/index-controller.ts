@@ -17,17 +17,10 @@ const indexController = async (req: Request, res: Response): Promise<Response> =
 
     try {
         repoResponse = await request(REPOURL);
-    }
 
-    catch (error) {
-        response = {...response, message: "Please, check the link you're searching..."}
-    }
-
-
-    try {
         // First thing is create an array of <tr> tag that represents the file/folders the repo delivers when the page starts
         const rowData: any[] = await getRowData(repoResponse);
-        
+
         // Setting success in the request
         response = {...response, success: true}
 
@@ -52,10 +45,8 @@ const indexController = async (req: Request, res: Response): Promise<Response> =
     }
 
     catch (error) {
-        response = {...response, message: "Something went wrong. Please, contact the IT team."}
+        response = {...response, message: "Something went wrong. Please, check the link you're searching or contact the IT team..."}
     }
-
-    
     
     return res.json(response);
 }
