@@ -1,6 +1,7 @@
 import express, { Application } from "express";
 import IndexRoutes from "../routes/index-routes";
 import bodyParser from "body-parser";
+import cors from "cors";
 
 export default class App {
     private server: Application;
@@ -14,6 +15,7 @@ export default class App {
     public settings() {
         this.server.use(bodyParser.urlencoded({ extended: false }));
         this.server.use(bodyParser.json());
+        this.server.use(cors());
         this.server.set("port", process.env.PORT || this.port || 3000);
     }
 
