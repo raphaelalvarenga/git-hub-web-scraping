@@ -2,13 +2,14 @@ import request from "request-promise";
 import cheerio from "cheerio";
 import FileInterface from "../interfaces/file-interface";
 import getFileRemainingData from "../routines/getFileRemaningData";
+import FolderInterface from "../interfaces/folder-interface";
 
 const getRowData = async (html: string): Promise<FileInterface[]> => {
 
     const $ = cheerio.load(html);    
 
     const promises: any[] = $('.files .js-navigation-item').map(async (i: number, item: CheerioElement) => {
-        const tempFile: FileInterface = {name: "", extension: "", size: "", totalLines: ""};
+        let tempItem: any;
         const svgClasses = $(item).find(".icon > svg").attr("class");
         const isFile = svgClasses?.split(" ")[1] === "octicon-file";
         const content: Cheerio = $(item).find("td.content a");
@@ -16,6 +17,7 @@ const getRowData = async (html: string): Promise<FileInterface[]> => {
 
         // If it is a file...
         if (isFile) {
+            const tempFile: FileInterface = {name: "", extension: "", size: "", totalLines: ""};
             // Get the file name
             tempFile.name = content.text();
 
@@ -30,15 +32,17 @@ const getRowData = async (html: string): Promise<FileInterface[]> => {
 
             tempFile.totalLines = fileRemainingData.totalLines;
             tempFile.size = fileRemainingData.size;
+
+            tempItem = tempFile;
         } else {
             // Then it is a folder
+            tempItem = {name: content.text(), url: `https://github.com${relativeLink}`}
 
             // Got stuck here!
-            // const folderResponse: string = await request(`https://github.com${relativeLink}`);
-            // const subFiles: FileInterface[] = await getRowData(folderResponse);
+            
         }
 
-        return tempFile;
+        return tempItem;
     }).get();
 
     const files: FileInterface[] = await Promise.all(promises);

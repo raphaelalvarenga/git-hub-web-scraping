@@ -1,7 +1,9 @@
-import RepositoryInterface from "./repository-interface";
+import FolderInterface from "./folder-interface";
+import FileInterface from "./file-interface";
 
 export default interface ResponseInterface {
     success: boolean;
     message: string;
-    params: RepositoryInterface;
+    folders?: FolderInterface[];
+    files?: FileInterface[];
 }

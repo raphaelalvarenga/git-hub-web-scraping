@@ -19,10 +19,15 @@ const indexController = (req, res) => __awaiter(void 0, void 0, void 0, function
     const files = [];
     const REPOURL = req.body.url;
     const repoResponse = yield request_promise_1.default(REPOURL);
-    // First thing is create an array of <tr> tag that represents the file/folders the repo delivers when the page starts
-    const rowData = yield getRowData_1.default(repoResponse);
-    console.log("This is the files data:");
-    console.log(rowData);
-    return res.json(rowData);
+    let response = { success: false, message: "", files: [], folders: [] };
+    try {
+        // First thing is create an array of <tr> tag that represents the file/folders the repo delivers when the page starts
+        const rowData = yield getRowData_1.default(repoResponse);
+        response = Object.assign(Object.assign({}, response), { success: true, files: rowData });
+    }
+    catch (erro) {
+        response = Object.assign(Object.assign({}, response), { message: erro });
+    }
+    return res.json(response);
 });
 exports.default = indexController;

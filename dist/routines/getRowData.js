@@ -17,13 +17,14 @@ const getFileRemaningData_1 = __importDefault(require("../routines/getFileRemani
 const getRowData = (html) => __awaiter(void 0, void 0, void 0, function* () {
     const $ = cheerio_1.default.load(html);
     const promises = $('.files .js-navigation-item').map((i, item) => __awaiter(void 0, void 0, void 0, function* () {
-        const tempFile = { name: "", extension: "", size: "", totalLines: "" };
+        let tempItem;
         const svgClasses = $(item).find(".icon > svg").attr("class");
         const isFile = (svgClasses === null || svgClasses === void 0 ? void 0 : svgClasses.split(" ")[1]) === "octicon-file";
         const content = $(item).find("td.content a");
         const relativeLink = content.attr("href");
         // If it is a file...
         if (isFile) {
+            const tempFile = { name: "", extension: "", size: "", totalLines: "" };
             // Get the file name
             tempFile.name = content.text();
             // Get the extension. In case the name is such as ".gitignore", the whole name will be considered
@@ -34,14 +35,14 @@ const getRowData = (html) => __awaiter(void 0, void 0, void 0, function* () {
             const fileRemainingData = yield getFileRemaningData_1.default(FILEURL);
             tempFile.totalLines = fileRemainingData.totalLines;
             tempFile.size = fileRemainingData.size;
+            tempItem = tempFile;
         }
         else {
             // Then it is a folder
+            tempItem = { name: content.text(), url: `https://github.com${relativeLink}` };
             // Got stuck here!
-            // const folderResponse: string = await request(`https://github.com${relativeLink}`);
-            // const subFiles: FileInterface[] = await getRowData(folderResponse);
         }
-        return tempFile;
+        return tempItem;
     })).get();
     const files = yield Promise.all(promises);
     return files;
