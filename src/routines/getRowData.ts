@@ -34,8 +34,8 @@ const getRowData = async (html: string): Promise<FileInterface[]> => {
             // Then it is a folder
 
             // Got stuck here!
-            const folderResponse: string = await request(`https://github.com${relativeLink}`);
-            const subFiles: FileInterface[] = await getRowData(folderResponse);
+            // const folderResponse: string = await request(`https://github.com${relativeLink}`);
+            // const subFiles: FileInterface[] = await getRowData(folderResponse);
         }
 
         return tempFile;
