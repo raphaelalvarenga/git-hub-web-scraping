@@ -18,16 +18,38 @@ const indexController = (req, res) => __awaiter(void 0, void 0, void 0, function
     // This variable will be populated with all files in the project
     const files = [];
     const REPOURL = req.body.url;
-    const repoResponse = yield request_promise_1.default(REPOURL);
+    let repoResponse = "";
     let response = { success: false, message: "", files: [], folders: [] };
+    try {
+        repoResponse = yield request_promise_1.default(REPOURL);
+    }
+    catch (error) {
+        response = Object.assign(Object.assign({}, response), { message: "Please, check the link you're searching..." });
+    }
     try {
         // First thing is create an array of <tr> tag that represents the file/folders the repo delivers when the page starts
         const rowData = yield getRowData_1.default(repoResponse);
+        // Setting success in the request
         response = Object.assign(Object.assign({}, response), { success: true });
-        rowData.map(data => { var _a, _b; return data.url ? (_a = response.folders) === null || _a === void 0 ? void 0 : _a.push(data) : (_b = response.files) === null || _b === void 0 ? void 0 : _b.push(data); });
+        // Building folders and files parameters in the response
+        rowData.map(data => {
+            var _a, _b;
+            // Does the data have URL?
+            if (data.url) {
+                // Then, it's a folder! But unfortunately, git creates some hidden and nameless folders. So...
+                if (data.name !== "") {
+                    // ...we need to consider only those that have name
+                    (_a = response.folders) === null || _a === void 0 ? void 0 : _a.push(data);
+                }
+            }
+            else {
+                // Otherwise, it's a file!
+                (_b = response.files) === null || _b === void 0 ? void 0 : _b.push(data);
+            }
+        });
     }
-    catch (erro) {
-        response = Object.assign(Object.assign({}, response), { message: erro });
+    catch (error) {
+        response = Object.assign(Object.assign({}, response), { message: "Something went wrong. Please, contact the IT team." });
     }
     return res.json(response);
 });

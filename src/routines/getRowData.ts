@@ -37,9 +37,6 @@ const getRowData = async (html: string): Promise<any[]> => {
         } else {
             // Then it is a folder
             tempItem = {name: content.text(), url: `https://github.com${relativeLink}`}
-
-            // Got stuck here!
-            
         }
 
         return tempItem;

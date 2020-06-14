@@ -40,7 +40,6 @@ const getRowData = (html) => __awaiter(void 0, void 0, void 0, function* () {
         else {
             // Then it is a folder
             tempItem = { name: content.text(), url: `https://github.com${relativeLink}` };
-            // Got stuck here!
         }
         return tempItem;
     })).get();

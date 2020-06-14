@@ -12,21 +12,47 @@ const indexController = async (req: Request, res: Response): Promise<Response> =
 
     const REPOURL: string = req.body.url;
 
-    const repoResponse: string = await request(REPOURL);
-
+    let repoResponse: string = "";
     let response: ResponseInterface = {success: false, message: "", files: [], folders: []};
+
+    try {
+        repoResponse = await request(REPOURL);
+    }
+
+    catch (error) {
+        response = {...response, message: "Please, check the link you're searching..."}
+    }
+
 
     try {
         // First thing is create an array of <tr> tag that represents the file/folders the repo delivers when the page starts
         const rowData: any[] = await getRowData(repoResponse);
         
+        // Setting success in the request
         response = {...response, success: true}
 
-        rowData.map(data => data.url ? response.folders?.push(data) : response.files?.push(data))
+        // Building folders and files parameters in the response
+        rowData.map(data => {
+
+            // Does the data have URL?
+            if (data.url) {
+
+                // Then, it's a folder! But unfortunately, git creates some hidden and nameless folders. So...
+                if (data.name !== "") {
+                    // ...we need to consider only those that have name
+                    response.folders?.push(data)
+                }
+
+            } else {
+
+                // Otherwise, it's a file!
+                response.files?.push(data)
+            }
+        })
     }
 
-    catch (erro) {
-        response = {...response, message: erro}
+    catch (error) {
+        response = {...response, message: "Something went wrong. Please, contact the IT team."}
     }
 
     
