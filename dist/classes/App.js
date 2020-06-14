@@ -12,12 +12,11 @@ class App {
         this.server = express_1.default();
         this.settings();
         this.routes();
-        this.port = port || 3000;
     }
     settings() {
         this.server.use(body_parser_1.default.urlencoded({ extended: false }));
         this.server.use(body_parser_1.default.json());
-        this.server.set("port", this.port || process.env.PORT || 3000);
+        this.server.set("port", process.env.PORT || this.port || 3000);
     }
     routes() {
         this.server.use(index_routes_1.default);

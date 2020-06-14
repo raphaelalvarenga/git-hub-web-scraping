@@ -9,14 +9,12 @@ export default class App {
         this.server = express();
         this.settings();
         this.routes();
-        
-        this.port = port || 3000;
     }
 
     public settings() {
         this.server.use(bodyParser.urlencoded({ extended: false }));
         this.server.use(bodyParser.json());
-        this.server.set("port", this.port || process.env.PORT || 3000);
+        this.server.set("port", process.env.PORT || this.port || 3000);
     }
 
     public routes() {
