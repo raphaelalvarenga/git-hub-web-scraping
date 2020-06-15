@@ -7,15 +7,17 @@ import FileExtensionInterface from "../interfaces/file-extension-interface";
 
 const indexController = async (req: Request, res: Response): Promise<Response> => {
 
-    // This variable will be populated with all files in the project
-    const files: FileInterface[] = [];
-
+    // This is URL you sent to me
     const REPOURL: string = req.body.url;
 
+    // This variable will get the HTML page
     let repoResponse: string = "";
+
+    // This will be the result and delivered to front end
     let response: ResponseInterface = {success: false, message: "", files: [], folders: []};
 
     try {
+        // Let's get the repo you sent to me
         repoResponse = await request(REPOURL);
 
         // First thing is create an array of <tr> tag that represents the file/folders the repo delivers when the page starts
