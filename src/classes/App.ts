@@ -2,6 +2,7 @@ import express, { Application } from "express";
 import IndexRoutes from "../routes/index-routes";
 import bodyParser from "body-parser";
 import cors from "cors";
+import path from "path";
 
 // An instance of this class represents the server
 export default class App {
@@ -21,6 +22,7 @@ export default class App {
         this.server.use(bodyParser.urlencoded({ extended: false }));
         this.server.use(bodyParser.json());
         this.server.use(cors());
+        this.server.use(express.static(path.join(__dirname, "..", "..", "public")));
         this.server.set("port", process.env.PORT || this.port || 3000);
     }
 
